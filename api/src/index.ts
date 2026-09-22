@@ -11,11 +11,11 @@ const server = createServer((req, res) => {
   }
 
   if (req.url === "/health/db") {
-    prisma.tenant
+    prisma.user
       .count()
       .then((count) => {
         res.writeHead(200, { "content-type": "application/json" });
-        res.end(JSON.stringify({ status: "ok", tenants: count }));
+        res.end(JSON.stringify({ status: "ok", users: count }));
       })
       .catch((err) => {
         res.writeHead(500, { "content-type": "application/json" });
