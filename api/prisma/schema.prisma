@@ -1,7 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
   provider = "prisma-client"
@@ -12,21 +8,19 @@ datasource db {
   provider = "postgresql"
 }
 
-model Tenant {
-  id        String   @id @default(cuid())
-  name      String
-  createdAt DateTime @default(now())
-  users     User[]
-}
-
 model User {
   id           String   @id @default(cuid())
+  name         String
   email        String   @unique
   passwordHash String
-  role         Role     @default(ADMIN)
+  emailVerifiedAt DateTime?
+  emailVerifyToken String? @unique
+  passwordResetToken     String?   @unique
+  passwordResetExpiresAt DateTime?
+  isActive               Boolean   @default(true)
+  deactivatedAt          DateTime?
+  role         Role     @default(USER)
   createdAt    DateTime @default(now())
-  tenantId     String
-  tenant       Tenant   @relation(fields: [tenantId], references: [id])
 }
 
 enum Role {

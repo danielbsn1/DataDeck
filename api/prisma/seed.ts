@@ -12,24 +12,19 @@ function hashPassword(password: string): string {
 }
 
 async function main() {
-  const tenant = await prisma.tenant.upsert({
-    where: { id: "seed-tenant" },
-    update: {},
-    create: { id: "seed-tenant", name: "DataDeck Dev" },
-  });
-
   await prisma.user.upsert({
     where: { email: "admin@datadeck.dev" },
     update: {},
     create: {
+      name: "Admin",
       email: "admin@datadeck.dev",
       passwordHash: hashPassword("admin123"),
       role: "ADMIN",
-      tenantId: tenant.id,
+      emailVerifiedAt: new Date(),
     },
   });
 
-  console.log("Seed concluído: tenant + admin criados.");
+  console.log("Seed concluído: admin criado.");
 }
 
 main()
